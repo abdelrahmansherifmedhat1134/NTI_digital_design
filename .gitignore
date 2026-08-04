@@ -1,0 +1,9 @@
+# Ignore Questa/ModelSim compiled libraries
+work/
+*.wlf
+
+# Ignore waveform dumps
+*.vcd
+
+# Ignore transcript logs
+transcript
