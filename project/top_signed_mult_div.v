@@ -1,4 +1,4 @@
-module signed_mult_div #(parameter width = 8)(
+module top_signed_mult_div #(parameter width = 8)(
     input  wire                             clk,      
     input  wire                             rst, 
     input  wire        [1:0]                op_sel, //multiplication =2'd0 , division = 2'd1 , remainder = 2'd2 
