@@ -1,7 +1,9 @@
 `timescale 1ns/1ps
 module multiplier (
-    input clk,rst,
-    input wire signed [7:0]A,B,
+    input                    clk,rst,
+    input wire               enable,
+    input wire signed [7:0]  A,B,
+    
     output reg signed [15:0] sum
 );
 integer i;
@@ -12,7 +14,7 @@ always @(posedge clk,negedge rst) begin
    if(!rst)
    begin
       sum=16'sb0;
-   end  else begin
+   end  else if (enable) begin
    sum2=16'sb0;
      for(i=0;i<=6;i=i+2)
      begin
