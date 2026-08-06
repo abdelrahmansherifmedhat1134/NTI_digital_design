@@ -38,15 +38,16 @@
 
 module tb_division_non #(parameter Number_of_bits_tb = 8);
 
-reg                                 clk_tb, rst_tb, start_tb ;
+reg                                 clk_tb, rst_tb, enable_tb, start_tb ;
 reg signed  [Number_of_bits_tb-1:0] N_tb, D_tb ;
 wire signed [Number_of_bits_tb-1:0] Q_tb, R_tb ;
 wire                                done_tb, busy_tb ;
 wire                                DBZ_tb ;
 
-division_non #(Number_of_bits_tb) DUT(
+division_non #(.Number_of_bits(Number_of_bits_tb)) DUT(
     .clk(clk_tb),
     .rst(rst_tb),
+    .enable(enable_tb),
     .start(start_tb),
     .N(N_tb),
     .D(D_tb),
@@ -64,13 +65,15 @@ end
 
 initial begin
     rst_tb = 0 ;
+    enable_tb = 0 ;
     N_tb = 0;
     D_tb = 0;
     start_tb = 0 ;
 
-    $monitor("Time = %0t | rst = %b | N = %d, D = %d | quotient = %d | remainder = %d | DBZ = %b", $time, rst_tb, N_tb, D_tb, Q_tb, R_tb, DBZ_tb   );
+    $monitor("Time = %0t | rst = %b | enable = %b | N = %d, D = %d | quotient = %d | remainder = %d | DBZ = %b", $time, rst_tb, enable_tb, N_tb, D_tb, Q_tb, R_tb, DBZ_tb   );
 
     #20 rst_tb = 1 ;
+    enable_tb = 1 ;
     #10 ;
     $display("-----------------------------------------") ;
     $display("starting signed divisor tests") ;
@@ -119,6 +122,76 @@ initial begin
     @(posedge clk_tb) ;
     start_tb =0 ;
     wait(DBZ_tb) ;
+    @(posedge clk_tb) ;
+
+    // ---------------------------------------------------------
+    // NEW EDGE CASES ADDED BELOW
+    // ---------------------------------------------------------
+
+    $display("fifth test case ===> (23 / -5)") ;
+    N_tb = 8'd23 ;
+    D_tb = -8'd5 ;
+    start_tb = 1 ;
+
+    @(posedge clk_tb) ;
+    start_tb =0 ;
+    wait(busy_tb == 1) ;
+    wait(busy_tb == 0) ;
+    @(posedge clk_tb) ;
+
+    $display("sixth test case ===> (-23 / -5)") ;
+    N_tb = -8'd23 ;
+    D_tb = -8'd5 ;
+    start_tb = 1 ;
+
+    @(posedge clk_tb) ;
+    start_tb =0 ;
+    wait(busy_tb == 1) ;
+    wait(busy_tb == 0) ;
+    @(posedge clk_tb) ;
+
+    $display("seventh test case ===> (0 / 15)") ;
+    N_tb = 8'd0 ;
+    D_tb = 8'd15 ;
+    start_tb = 1 ;
+
+    @(posedge clk_tb) ;
+    start_tb =0 ;
+    wait(busy_tb == 1) ;
+    wait(busy_tb == 0) ;
+    @(posedge clk_tb) ;
+    
+    $display("eighth test case ===> (127 / 1)") ;
+    N_tb = 8'd127 ;
+    D_tb = 8'd1 ;
+    start_tb = 1 ;
+
+    @(posedge clk_tb) ;
+    start_tb =0 ;
+    wait(busy_tb == 1) ;
+    wait(busy_tb == 0) ;
+    @(posedge clk_tb) ;
+
+    $display("ninth test case ===> (-128 / 127)") ;
+    N_tb = -8'd128 ;
+    D_tb = 8'd127 ;
+    start_tb = 1 ;
+
+    @(posedge clk_tb) ;
+    start_tb =0 ;
+    wait(busy_tb == 1) ;
+    wait(busy_tb == 0) ;
+    @(posedge clk_tb) ;
+
+    $display("tenth test case ===> (-128 / -1)") ;//signed division overflow case because there are not
+    N_tb = -8'd128 ;//enough bits to represent 128 so it represents -127 instead 
+    D_tb = -8'd1 ;
+    start_tb = 1 ;
+
+    @(posedge clk_tb) ;
+    start_tb =0 ;
+    wait(busy_tb == 1) ;
+    wait(busy_tb == 0) ;
     @(posedge clk_tb) ;
 
     $finish ;

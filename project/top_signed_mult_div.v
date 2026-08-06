@@ -84,8 +84,8 @@ division_non #(.Number_of_bits(width)) u_division_non(
 always @(*)begin
     case(op_sel)
         2'd0 : final_result = mult_result ;
-        2'd1 : final_result = {{8{div_quotient[7]}},div_quotient} ;
-        2'd2 : final_result = {{8{div_remainder[7]}},div_remainder} ;
+        2'd1 : final_result = {{width{div_quotient[width-1]}},div_quotient} ;
+        2'd2 : final_result = {{width{div_remainder[width-1]}},div_remainder} ;
         default : final_result = 0 ; 
     endcase
 end

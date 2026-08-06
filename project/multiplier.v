@@ -13,7 +13,7 @@ assign c={B[7],B,1'b0};
 always @(posedge clk,negedge rst) begin
    if(!rst)
    begin
-      sum=16'sb0;
+      sum <= 16'sb0;
    end  else if (enable) begin
    sum2=16'sb0;
      for(i=0;i<=6;i=i+2)
@@ -24,12 +24,12 @@ always @(posedge clk,negedge rst) begin
          3'b011       :sum1=$signed({{7{A[7]}}, A, 1'b0}) <<< i;
          3'b100       :sum1=$signed(-{{7{A[7]}}, A, 1'b0}) <<< i;
          3'b101,3'b110:sum1=$signed(-{{8{A[7]}}, A}) <<< i;
-         default sum2 =16'b0;      
+         default: sum2 =16'b0;      
          endcase
          sum2=sum2+sum1;
      end
-     sum=sum2;
+     sum <= sum2;
    end  
 end
 
-endmodule 
+endmodule
