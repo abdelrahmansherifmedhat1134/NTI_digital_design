@@ -1,18 +1,4 @@
-comments on files 
-
-multiplier.v      is the first one anas made 
-multiplier_v2.v   is the one after i made the alters to match the top module 
-
-division_non.v    is the one ashraf made first
-division_non_v2.v is the one altered to match top module 
-
-division_non_v3   is where ashraf fixed the blocking assignment problem but is not compatible with top module 
-
-tb_multiplier.v is the on for multiplier.v
-tb_division_non.v is the one for division_non.v
-
-
-
+comments 
 
 what problems did i fix while integrating the reference modules with the top module ?
 
